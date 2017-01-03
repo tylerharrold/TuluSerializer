@@ -1,3 +1,4 @@
+package serializer;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -5,8 +6,6 @@ import java.io.UnsupportedEncodingException;
  * Static methods exist for all primitive types in java and Strings (which are simply
  * translated into a string of bytes and saved into the byte array)
  * 
- * It is important to note that the length of arrays is encoded as a short, so this expects all 
- * arrays to have less than 32,767 elements
  * @author Tyler
  *
  */
@@ -90,6 +89,10 @@ public class DataSerializer {
 	
 	// String - variable bytes
 	public static int writeBytes(byte[] dest, int index, String data) throws UnsupportedEncodingException{
+		// write the length of the string
+		short strLen = (short)data.length();
+		index = writeBytes(dest, index, strLen);
+		
 		// byte array of string using UTF-16BE encoding
 		byte[] bytes = data.getBytes("UTF-16BE");
 		
@@ -107,10 +110,6 @@ public class DataSerializer {
 	
 	// byte array
 	public static int writeBytes(byte[] dest, int index, byte[] data){
-		// write in length of byte array
-		short arrayLen = (short) data.length;
-		index = writeBytes(dest, index, arrayLen);
-		
 		// write bytes in byte array
 		for(int i = 0 ; i < data.length; i++){
 			index = writeBytes(dest, index, data[i]);
@@ -118,19 +117,66 @@ public class DataSerializer {
 		return index;
 	}
 	
+	// boolean array
+	public static int writeBytes(byte[] dest, int index, boolean[] data){
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
+	
 	// char array 
+	public static int writeBytes(byte[] dest, int index, char[] data){
+		// write bytes in byte array
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
 	
 	// short array
+	public static int writeBytes(byte[] dest, int index, short[] data){
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
+	
 	
 	// int array
+	public static int writeBytes(byte[] dest, int index, int[] data){
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
 	
 	// long array
+	public static int writeBytes(byte[] dest, int index, long[] data){
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
 	
 	// float array
+	public static int writeBytes(byte[] dest, int index, float[] data){
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
 	
 	// double array
+	public static int writeBytes(byte[] dest, int index, double[] data){
+		for(int i = 0 ; i < data.length ; i++){
+			index = writeBytes(dest, index, data[i]);
+		}
+		return index;
+	}
 	
 	// String array?
+	// TODO
 	
 	
 	
