@@ -7,8 +7,9 @@ import serializer.DataSerializer;
 import serializer.ContainerType;
 import serializer.DataReader;
 import serializer.Types;
+import serializer.datastructures.TContainer;
 
-public abstract class TuluField {
+public abstract class TuluField implements TContainer{
 	// type of container
 	public static final byte CONTAINER_TYPE = ContainerType.FIELD;
 	// length of name of container
@@ -33,13 +34,15 @@ public abstract class TuluField {
 	}
 	
 	// method that reports the current size of this entire container in bytes
-	public int getSize(){
+	@Override
+	public int getByteSize(){
 		return 1 + 2 + fieldName.length + 1 + data.length;
 	}
 	
 	// method that writes out entire container to byte array
+	@Override
 	public int writeBytes(byte[] dest, int startIndex){
-		assert(startIndex + getSize() < dest.length); // ensure no error for now
+		assert(startIndex + getByteSize() < dest.length); // ensure no error for now
 		startIndex = DataSerializer.writeBytes(dest, startIndex, CONTAINER_TYPE);
 		startIndex = DataSerializer.writeBytes(dest, startIndex, fieldNameLength);
 		startIndex = DataSerializer.writeBytes(dest, startIndex, fieldName);
