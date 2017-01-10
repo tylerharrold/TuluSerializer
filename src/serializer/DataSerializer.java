@@ -1,5 +1,6 @@
 package serializer;
 import java.io.UnsupportedEncodingException;
+import static serializer.Types.CHARSET;
 
 /**
  * Class responsible for writing and reading data into and out of byte arrays.
@@ -10,14 +11,15 @@ import java.io.UnsupportedEncodingException;
  *
  */
 public class DataSerializer {
-	public static final int BITS_IN_SHORT = 	8 * 2;
-	public static final int BITS_IN_CHAR = 		8 * 2;
-	public static final int BITS_IN_BYTE = 		8 * 2;
-	public static final int BITS_IN_INT = 		8 * 4;
-	public static final int BITS_IN_LONG = 		8 * 8;
-	public static final int BITS_IN_FLOAT = 	8 * 4;
-	public static final int BITS_IN_DOUBLE = 	8 * 8;
+//	public static final int BITS_IN_SHORT = 	8 * 2;
+//	public static final int BITS_IN_CHAR = 		8 * 2;
+//	public static final int BITS_IN_BYTE = 		8 * 2;
+//	public static final int BITS_IN_INT = 		8 * 4;
+//	public static final int BITS_IN_LONG = 		8 * 8;
+//	public static final int BITS_IN_FLOAT = 	8 * 4;
+//	public static final int BITS_IN_DOUBLE = 	8 * 8;
 	public static final int BYTE_SHIFT = 		8;
+	
 	
 
 	/*
@@ -38,7 +40,7 @@ public class DataSerializer {
 	
 	// short - two bytes
 	public static int writeBytes(byte[] dest, int index, short data){
-		for(int i = (BITS_IN_SHORT - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
+		for(int i = (Short.SIZE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
 			dest[index++] = (byte) ((data >> i) & 0xff);
 		}
 		return index;
@@ -47,7 +49,7 @@ public class DataSerializer {
 	
 	// char - two bytes
 	public static int writeBytes(byte[] dest, int index, char data){
-		for(int i = (BITS_IN_CHAR - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
+		for(int i = (Character.SIZE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
 			dest[index++] = (byte) ((data >> i) & 0xff);
 		}
 		return index;
@@ -55,7 +57,7 @@ public class DataSerializer {
 	
 	// int - four bytes
 	public static int writeBytes(byte[] dest, int index, int data){
-		for(int i = (BITS_IN_INT - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
+		for(int i = (Integer.SIZE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
 			dest[index++] = (byte) ((data >> i) & 0xff);
 		}
 		return index;
@@ -63,7 +65,7 @@ public class DataSerializer {
 	
 	// long - eight bytes
 	public static int writeBytes(byte[] dest, int index, long data){
-		for(int i = (BITS_IN_LONG - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
+		for(int i = (Long.SIZE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
 			dest[index++] = (byte) ((data >> i) & 0xff);
 		}
 		return index;
@@ -72,7 +74,7 @@ public class DataSerializer {
 	// float - 4 bytes
 	public static int writeBytes(byte[] dest, int index, float data){
 		int bits = Float.floatToIntBits(data);
-		for(int i = (BITS_IN_FLOAT - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
+		for(int i = (Float.SIZE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
 			dest[index++] = (byte) ((bits >> i) & 0xff);
 		}
 		return index;
@@ -81,7 +83,7 @@ public class DataSerializer {
 	// double
 	public static int writeBytes(byte[] dest, int index, double data){
 		long bits = Double.doubleToLongBits(data);
-		for(int i = (BITS_IN_DOUBLE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
+		for(int i = (Double.SIZE - BYTE_SHIFT) ; i >= 0 ; i-= BYTE_SHIFT){
 			dest[index++] = (byte) ((bits >> i) & 0xff);
 		}
 		return index;
@@ -94,7 +96,7 @@ public class DataSerializer {
 		index = writeBytes(dest, index, strLen);
 		
 		// byte array of string using UTF-16BE encoding
-		byte[] bytes = data.getBytes("UTF-16BE");
+		byte[] bytes = data.getBytes(CHARSET);
 		
 		// write array of chars (as bytes) into destination byte array
 		index = writeBytes(dest, index, bytes);
